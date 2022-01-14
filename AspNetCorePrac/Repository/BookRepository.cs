@@ -22,7 +22,9 @@ namespace AspNetCorePrac.Repository
             {
                 Title = bookModel.Title,
                 Author = bookModel.Author,
-                Description = bookModel.Description
+                Description = bookModel.Description,
+                TotalPages = bookModel.TotalPages.HasValue ? bookModel.TotalPages.Value : 0
+
 
             };
 
