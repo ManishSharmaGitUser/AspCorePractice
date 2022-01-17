@@ -29,6 +29,7 @@ namespace AspNetCorePrac
             services.AddDbContext<BookStoreContext>(options => options.UseSqlServer("Server=DESKTOP-LFMLTL8\\SQLEXPRESS;Database=BookStore;Integrated Security=true"));
             services.AddControllersWithViews();
             services.AddScoped<BookRepository, BookRepository>();
+            services.AddScoped<LanguageRepository, LanguageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

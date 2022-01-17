@@ -12,10 +12,12 @@ namespace AspNetCorePrac.Controllers
     public class BookController : Controller
     {
         private readonly BookRepository _bookRepository;
+        private readonly LanguageRepository _languageRepository;
 
-        public BookController(BookRepository bookRepository)
+        public BookController(BookRepository bookRepository,LanguageRepository languageRepository)
         {
             _bookRepository = bookRepository;
+            _languageRepository = languageRepository;
         }
 
         public IActionResult Index()
@@ -33,11 +35,29 @@ namespace AspNetCorePrac.Controllers
             //ViewBag.Language = new SelectList(GetLanguage(),"Id","Text");
             //ViewBag.Language = GetLanguage().Select(x => new SelectListItem() { Text = x.Text,Value=x.Id.ToString() }).ToList();
 
-            ViewBag.Language = new List<SelectListItem>() { 
-                  new SelectListItem { Text = "English" ,Value = "1" },
-                  new SelectListItem { Text = "Hindi" ,Value = "2" ,Selected=true },
-                  new SelectListItem { Text = "Dutch" ,Value = "3" ,Disabled=true }
-            };
+            //ViewBag.Language = new List<SelectListItem>() { 
+            //      new SelectListItem { Text = "English" ,Value = "1" },
+            //      new SelectListItem { Text = "Hindi" ,Value = "2" ,Selected=true },
+            //      new SelectListItem { Text = "Dutch" ,Value = "3" ,Disabled=true }
+            //};
+
+
+            //var group1 = new SelectListGroup() { Name = "grp1" };
+            //var group2 = new SelectListGroup() { Name = "grp2" ,Disabled=true };
+            //var group3 = new SelectListGroup() { Name = "grp3" };
+
+            // ViewBag.Language = new List<SelectListItem>()
+            //{
+            //    new SelectListItem { Text = "English" ,Value = "1",Selected=true ,Group =group1 },
+            //    new SelectListItem { Text = "Hinglish" ,Value = "11" ,Group =group1 },
+            //    new SelectListItem { Text = "Hindi" ,Value = "2"  ,Group =group2 },
+            //    new SelectListItem { Text = "Dutch" ,Value = "3" ,Disabled=true,Group =group3 }
+            //};
+
+            var data = _languageRepository.GetLanguage();
+            ViewBag.Language = new SelectList(data,"Id","Text");
+
+
             ViewBag.IsSuccess =  issuccess;
             return View();
         }
@@ -55,8 +75,10 @@ namespace AspNetCorePrac.Controllers
 
             else
             {
-                ViewBag.Language = new SelectList(GetLanguage(), "Id", "Text");
+                //ViewBag.Language = new SelectList(GetLanguage(), "Id", "Text");
                 //ViewBag.Language = new List<string>() { "Hindi", "English", "Dutch" };
+
+                ViewBag.Language = new SelectList(_languageRepository.GetLanguage(), "Id", "Text");
                 ModelState.AddModelError("", "This is my Custom Error");
                 ViewBag.IsSuccess = false;
             }

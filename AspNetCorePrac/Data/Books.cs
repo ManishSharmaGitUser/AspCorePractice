@@ -13,5 +13,9 @@ namespace AspNetCorePrac.Data
         public string Description { get; set; }
 
         public int TotalPages { get; set; }
+
+        public int LanguageId { get; set; }
+
+        public Language Language { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AspNetCorePrac.Data.Enums;
+using AspNetCorePrac.Helper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,8 +11,9 @@ namespace AspNetCorePrac.Models
     public class BookModel
     {
         public int Id { get; set; }
-        [Required(ErrorMessage ="Please Enter Title")]
-        [StringLength(100 , MinimumLength =5,ErrorMessage ="Title Length Must be 5 to 100")]
+        //[Required(ErrorMessage ="Please Enter Title")]
+        //[StringLength(100 , MinimumLength =5,ErrorMessage ="Title Length Must be 5 to 100")]
+        [MyCustomValidation("manish",ErrorMessage ="Field Must Contain name manish")]
         public string Title { get; set; }
         [Required(ErrorMessage ="Please Enter Author Name")]
         public string Author { get; set; }
@@ -21,6 +24,14 @@ namespace AspNetCorePrac.Models
         [Required(ErrorMessage ="Please Enter Pages")]
         public int? TotalPages { get; set; }
         [Required(ErrorMessage ="Please choose book Language")]
-        public string Language { get; set; }
+        public int? LanguageId { get; set; }
+        //public string Language { get; set; }
+
+
+        //[Required(ErrorMessage = "Please choose book Languages")]
+        //public List<string> MultiLanguage { get; set; }
+
+        //[Required(ErrorMessage = "Please choose book Languages")]
+        //public LanguageEnum? LanguageEnm { get; set; }
     }
 }
