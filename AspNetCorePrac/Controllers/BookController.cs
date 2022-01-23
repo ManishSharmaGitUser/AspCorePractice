@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCorePrac.Models;
 using AspNetCorePrac.Repository;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -13,11 +16,20 @@ namespace AspNetCorePrac.Controllers
     {
         private readonly BookRepository _bookRepository;
         private readonly LanguageRepository _languageRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public BookController(BookRepository bookRepository,LanguageRepository languageRepository)
+        public BookController(BookRepository bookRepository,LanguageRepository languageRepository,
+            IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
             _languageRepository = languageRepository;
+            _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<IActionResult> GetAllbooks()
+        {
+           var data =await _bookRepository.GetAllBooks();
+            return View(data);
         }
 
         public IActionResult Index()
@@ -66,6 +78,25 @@ namespace AspNetCorePrac.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.CoverPhoto!=null)
+                {
+                    string folder = "books/cover/";
+                    model.CoverImageUrl =  await UploadImage(folder,model.CoverPhoto);
+                }
+
+                if (model.GalleryFiles!=null)
+                {
+                    string folder = "books/Gallery/";
+                    model.Gallery = new List<GalleryModel>();
+                    foreach (var image in model.GalleryFiles)
+                    {
+                        var gallery = new GalleryModel {  Name = image.FileName,Url = await UploadImage(folder, image) };
+
+
+                        model.Gallery.Add(gallery);
+                    }
+                }
+
                 int res = await _bookRepository.AddNewBook(model);
                 if (res > 0)
                 {
@@ -75,6 +106,11 @@ namespace AspNetCorePrac.Controllers
 
             else
             {
+                var query = from state in ModelState.Values
+                            from error in state.Errors
+                            select error.ErrorMessage;
+                var errors = query.ToArray();
+
                 //ViewBag.Language = new SelectList(GetLanguage(), "Id", "Text");
                 //ViewBag.Language = new List<string>() { "Hindi", "English", "Dutch" };
 
@@ -86,6 +122,16 @@ namespace AspNetCorePrac.Controllers
             return View();
 
 
+        }
+
+        private async Task<string> UploadImage(string folderPath, IFormFile file)
+        {
+            
+            folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
+            string serverfulpath = Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
+            await file.CopyToAsync(new FileStream(serverfulpath, FileMode.Create));
+
+            return "/" + folderPath;
         }
 
         private List<LanguageModel> GetLanguage()

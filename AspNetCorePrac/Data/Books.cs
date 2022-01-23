@@ -17,5 +17,9 @@ namespace AspNetCorePrac.Data
         public int LanguageId { get; set; }
 
         public Language Language { get; set; }
+
+        public string CoverImageUrl { get; set; }
+
+        public ICollection<BookGallery> Gallery { get; set; }
     }
 }

@@ -17,6 +17,8 @@ namespace AspNetCorePrac.Data
 
         public DbSet<Language> Languages { get; set; }
 
+        public DbSet<BookGallery> BookGallery { get; set; }
+
 
         //commented b/c in statup class we passed connection string
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

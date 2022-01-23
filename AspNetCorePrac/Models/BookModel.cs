@@ -1,5 +1,6 @@
 ﻿using AspNetCorePrac.Data.Enums;
 using AspNetCorePrac.Helper;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,7 +26,7 @@ namespace AspNetCorePrac.Models
         public int? TotalPages { get; set; }
         [Required(ErrorMessage ="Please choose book Language")]
         public int? LanguageId { get; set; }
-        //public string Language { get; set; }
+        public string Language { get; set; }
 
 
         //[Required(ErrorMessage = "Please choose book Languages")]
@@ -33,5 +34,18 @@ namespace AspNetCorePrac.Models
 
         //[Required(ErrorMessage = "Please choose book Languages")]
         //public LanguageEnum? LanguageEnm { get; set; }
+
+        [Display(Name ="Choose the cover Photo")]
+        [Required]
+        public IFormFile CoverPhoto { get; set; }
+
+        public string CoverImageUrl { get; set; }
+
+        //below is for multiple uploading of images
+        [Display(Name = "Choose the Photos")]
+        [Required]
+        public IFormFileCollection GalleryFiles { get; set; }
+
+        public List<GalleryModel> Gallery { get; set; }
     }
 }

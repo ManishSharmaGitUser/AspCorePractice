@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "GetAllbooks";
+}
+
+@model IEnumerable<BookModel>
+<div class="container">
+    <h3 class="display-4">All Books</h3>
+    <div class="row">
+
+        @foreach (var book in Model)
+        {
+            //if you use this partial view any where else where you have no data to pass then you sholud pass model="new BookModel()(means Model obj that is used in partial view)"
+
+            @*<partial name="_bookThumbnail" model="@book" />*@
+
+
+            //using html helper partial methods
+            @*@Html.Partial("_bookThumbnail", book)*@
+
+            //async method
+            @*@await Html.PartialAsync("_bookThumbnail", book)*@
+
+            //use of RenderPartial Method
+            @*@{Html.RenderPartial("_bookThumbnail", book)}*@
+
+            @{await Html.RenderPartialAsync("_bookThumbnail", book)}
+
+            @*<div class="col-sm-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="@book.CoverImageUrl" class="img-thumbnail" />
+                    <div class="card-body">
+                        <h3 class="card-title">@book.Title</h3>
+                        <p class="card-text">@book.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a asp-route-id="@book.Id" class="btn btn-sm btn-outline-secondary" asp-route="bookDetailsRoute">
+                                    View Details
+                                </a>
+                            </div>
+                            <small class="text-muted">@book.Author</small>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+    }
+        /**/
+
+    </div>
+</div>
+
