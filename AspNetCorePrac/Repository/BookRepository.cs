@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AspNetCorePrac.Repository
 {
-    public class BookRepository
+    public class BookRepository : IBookRepository
     {
         private readonly BookStoreContext bookRepository;
 
@@ -32,28 +32,30 @@ namespace AspNetCorePrac.Repository
             newbook.Gallery = new List<BookGallery>();
             foreach (var detailofImg in bookModel.Gallery)
             {
-                newbook.Gallery.Add(new BookGallery { 
-                      Name= detailofImg.Name,
-                      URL= detailofImg.Url
+                newbook.Gallery.Add(new BookGallery
+                {
+                    Name = detailofImg.Name,
+                    URL = detailofImg.Url
                 });
             }
 
-           await bookRepository.Books.AddAsync(newbook);
-           await bookRepository.SaveChangesAsync();
+            await bookRepository.Books.AddAsync(newbook);
+            await bookRepository.SaveChangesAsync();
             return newbook.Id;
         }
 
         public async Task<List<BookModel>> GetAllBooks()
         {
-          return await bookRepository.Books.Select(x=> new BookModel { 
-             Id =x.Id,
-             Author = x.Author,
-             CoverImageUrl =x.CoverImageUrl,
-             Title =x.Title,
-             Description = x.Description,
-             TotalPages = x.TotalPages,
-             LanguageId = x.LanguageId,
-             Language = x.Language.Text
+            return await bookRepository.Books.Select(x => new BookModel
+            {
+                Id = x.Id,
+                Author = x.Author,
+                CoverImageUrl = x.CoverImageUrl,
+                Title = x.Title,
+                Description = x.Description,
+                TotalPages = x.TotalPages,
+                LanguageId = x.LanguageId,
+                Language = x.Language.Text
             }).ToListAsync();
         }
     }

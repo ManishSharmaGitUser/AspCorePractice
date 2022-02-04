@@ -9,26 +9,66 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace AspNetCorePrac.Controllers
 {
     public class BookController : Controller
     {
-        private readonly BookRepository _bookRepository;
-        private readonly LanguageRepository _languageRepository;
+        private readonly IBookRepository _bookRepository=null;
+        private readonly ILanguageRepository _languageRepository=null;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        //private readonly IConfiguration _configuration = null;
+        private readonly NewBookAlertConfig _configuration = null;
 
-        public BookController(BookRepository bookRepository,LanguageRepository languageRepository,
-            IWebHostEnvironment webHostEnvironment)
+        //public BookController(IBookRepository bookRepository,ILanguageRepository languageRepository,
+        //    IWebHostEnvironment webHostEnvironment,IConfiguration configuration)
+        //{
+        //    _bookRepository = bookRepository;
+        //    _languageRepository = languageRepository;
+        //    _webHostEnvironment = webHostEnvironment;
+        //    _configuration = configuration;
+        //}
+
+        public BookController(IBookRepository bookRepository, ILanguageRepository languageRepository,
+       IWebHostEnvironment webHostEnvironment, IOptions<NewBookAlertConfig> _newBookAlertConfiguration)
         {
             _bookRepository = bookRepository;
             _languageRepository = languageRepository;
             _webHostEnvironment = webHostEnvironment;
+            _configuration = _newBookAlertConfiguration.Value;
         }
+
+        //public async Task<IActionResult> GetAllbooks()
+        //{
+        //    var appsettingdata = _configuration["AppName"];
+        //    var appsetting_innerdata = _configuration["infoObj:key1"];
+        //    var appsetting_innerdataa = _configuration["infoObj:key2"];
+        //    var key3 = _configuration["infoObj:key3:key3obj1"];
+
+        //    //reading bool value means reading with rpoper type
+        //    var dd = _configuration.GetValue<bool>("DisplayNewBookAlert");
+
+        //    //using bind method with NewBookAlertConfig Class 
+        //    var newbookalert = new NewBookAlertConfig();
+        //    _configuration.Bind("NewBookAlert", newbookalert);
+        //    var boolconfigvalue = newbookalert.DisplayNewBookAlert;
+
+
+        //    var data =await _bookRepository.GetAllBooks();
+        //    return View(data);
+        //}
+
+
 
         public async Task<IActionResult> GetAllbooks()
         {
-           var data =await _bookRepository.GetAllBooks();
+            var appsettingdata = _configuration.DisplayNewBookAlert;
+            
+           
+
+            var data = await _bookRepository.GetAllBooks();
             return View(data);
         }
 

@@ -24,7 +24,7 @@
             //use of RenderPartial Method
             @*@{Html.RenderPartial("_bookThumbnail", book)}*@
 
-            @{await Html.RenderPartialAsync("_bookThumbnail", book)}
+            await Html.RenderPartialAsync("_bookThumbnail", book);
 
             @*<div class="col-sm-4">
                 <div class="card mb-4 shadow-sm">

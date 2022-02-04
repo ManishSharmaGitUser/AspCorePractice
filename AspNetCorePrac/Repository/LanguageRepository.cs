@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AspNetCorePrac.Repository
 {
-    public class LanguageRepository
+    public class LanguageRepository : ILanguageRepository
     {
         private readonly BookStoreContext context;
         public LanguageRepository(BookStoreContext _context)
