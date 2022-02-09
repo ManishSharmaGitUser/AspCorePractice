@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AspNetCorePrac.Models;
 using AspNetCorePrac.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -77,6 +78,7 @@ namespace AspNetCorePrac.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult NewBook(bool issuccess =false)
         {
             // BookModel bookModel = new BookModel {Language="English" };

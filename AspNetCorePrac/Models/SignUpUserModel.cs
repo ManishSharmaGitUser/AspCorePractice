@@ -8,6 +8,10 @@ namespace AspNetCorePrac.Models
 {
     public class SignUpUserModel
     {
+        [Required(ErrorMessage = "Please Enter First Name")]
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
         [Required(ErrorMessage ="Please Enter Email Address")]
         [Display(Name ="Email Address")]
         [EmailAddress(ErrorMessage ="Please Enter A Valid Email")]
